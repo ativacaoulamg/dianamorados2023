@@ -2,67 +2,80 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Love Baby</title>
-	<style>
-		body {
-			margin: 0;
-			padding: 0;
-			background-repeat: no-repeat;
-			background: #191919;
-		}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Baby</title>
+    <style>
+        :root {
+            background-image: url(layla.jpeg);
+            background-size: 60%;
+            height: 100%;
+        }
+        
+        body {
+        }
 
-		.neon {
-			color: #fff;
-			text-shadow:
-				0 0 5px #fff,
-				0 0 10px #fff,
-				0 0 20px #fff,
-				0 0 40px #0ff,
-				0 0 80px #0ff,
-				0 0 90px #0ff,
-				0 0 100px #0ff,
-				0 0 150px #0ff;
-			text-align: center;
-		}
-	</style>
+        .neon {
+            color: #fff;
+            text-shadow:
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px #fff,
+                0 0 40px #0ff,
+                0 0 80px #0ff,
+                0 0 90px #0ff,
+                0 0 100px #0ff,
+                0 0 150px #0ff;
+            text-align: center;
+        }
+
+        #canvas {
+            border-radius: 80px;
+            float: right;
+            background: #ffffff10;
+        }
+
+    </style>
 </head>
 
 <body>
-	<div class="container" style="margin: auto;">
-		<h1 class="neon">Feliz dia dos Namorados!!!<br>I LOVE YOU LAYLA &hearts;</h1>
-		<h4 class="neon">Mais um Dia dos Namorados para Esposa mais Linda,Meiga e Inteligente que Há! Muito Orgulho de ser seu Namorado e Esposo!</h4>
-	</div>
+    <div class="container" style="margin: auto;">
+        <h1 class="neon">Feliz dia dos Namorados!!!<br>I LOVE YOU LAYLA &hearts;</h1>
+        <h4 class="neon">Mais um Dia dos Namorados para Esposa mais Linda,Meiga e Inteligente que Há! Muito Orgulho de
+            ser seu Namorado e Esposo!</h4>
+    </div>
 
-	<canvas id="canvas" width="390" height="300"></canvas>
+    <canvas id="canvas" width="39" height="30" ></canvas>
 
 
-	<script>
-		var canvas = document.getElementById("canvas");
+    <!--<img class="root" src="layla.jpeg"> -->
+    <script>
+        
+        var canvas = document.getElementById("canvas");
 
-		canvas.width = window.innerWidth;
-		canvas.height = window.innerHeight;
 
-		// Initialize the GL context
-		var gl = canvas.getContext('webgl');
-		if (!gl) {
-			console.error("Unable to initialize WebGL.");
-		}
+        canvas.width = window.innerWidth="400";
+        canvas.height = window.innerHeight="400";
 
-		//Time
-		var time = 0.0;
+        // Initialize the GL context
+        var gl = canvas.getContext('webgl');
+        if (!gl) {
+            console.error("Unable to initialize WebGL.");
+        }
 
-		//************** Shader sources **************
+        //Time
+        var time = 0.0;
 
-		var vertexSource = `
+        //************** Shader sources **************
+
+        var vertexSource = `
 attribute vec2 position;
 void main() {
 	gl_Position = vec4(position, 0.0, 1.0);
 }
 `;
 
-		var fragmentSource = `
+        var fragmentSource = `
 precision highp float;
 
 uniform float width;
@@ -211,115 +224,116 @@ void main(){
 }
 `;
 
-		//************** Utility functions **************
+        //************** Utility functions **************
 
-		window.addEventListener('resize', onWindowResize, false);
+        window.addEventListener('resize', onWindowResize, false);
 
-		function onWindowResize() {
-			canvas.width = window.innerWidth;
-			canvas.height = window.innerHeight;
-			gl.viewport(0, 0, canvas.width, canvas.height);
-			gl.uniform1f(widthHandle, window.innerWidth);
-			gl.uniform1f(heightHandle, window.innerHeight);
-		}
+        function onWindowResize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            gl.viewport(0, 0, canvas.width, canvas.height);
+            gl.uniform1f(widthHandle, window.innerWidth);
+            gl.uniform1f(heightHandle, window.innerHeight);
+        }
 
 
-		//Compile shader and combine with source
-		function compileShader(shaderSource, shaderType) {
-			var shader = gl.createShader(shaderType);
-			gl.shaderSource(shader, shaderSource);
-			gl.compileShader(shader);
-			if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-				throw "Shader compile failed with: " + gl.getShaderInfoLog(shader);
-			}
-			return shader;
-		}
+        //Compile shader and combine with source
+        function compileShader(shaderSource, shaderType) {
+            var shader = gl.createShader(shaderType);
+            gl.shaderSource(shader, shaderSource);
+            gl.compileShader(shader);
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                throw "Shader compile failed with: " + gl.getShaderInfoLog(shader);
+            }
+            return shader;
+        }
 
-		//From https://codepen.io/jlfwong/pen/GqmroZ
-		//Utility to complain loudly if we fail to find the attribute/uniform
-		function getAttribLocation(program, name) {
-			var attributeLocation = gl.getAttribLocation(program, name);
-			if (attributeLocation === -1) {
-				throw 'Cannot find attribute ' + name + '.';
-			}
-			return attributeLocation;
-		}
+        //From https://codepen.io/jlfwong/pen/GqmroZ
+        //Utility to complain loudly if we fail to find the attribute/uniform
+        function getAttribLocation(program, name) {
+            var attributeLocation = gl.getAttribLocation(program, name);
+            if (attributeLocation === -1) {
+                throw 'Cannot find attribute ' + name + '.';
+            }
+            return attributeLocation;
+        }
 
-		function getUniformLocation(program, name) {
-			var attributeLocation = gl.getUniformLocation(program, name);
-			if (attributeLocation === -1) {
-				throw 'Cannot find uniform ' + name + '.';
-			}
-			return attributeLocation;
-		}
+        function getUniformLocation(program, name) {
+            var attributeLocation = gl.getUniformLocation(program, name);
+            if (attributeLocation === -1) {
+                throw 'Cannot find uniform ' + name + '.';
+            }
+            return attributeLocation;
+        }
 
-		//************** Create shaders **************
+        //************** Create shaders **************
 
-		//Create vertex and fragment shaders
-		var vertexShader = compileShader(vertexSource, gl.VERTEX_SHADER);
-		var fragmentShader = compileShader(fragmentSource, gl.FRAGMENT_SHADER);
+        //Create vertex and fragment shaders
+        var vertexShader = compileShader(vertexSource, gl.VERTEX_SHADER);
+        var fragmentShader = compileShader(fragmentSource, gl.FRAGMENT_SHADER);
 
-		//Create shader programs
-		var program = gl.createProgram();
-		gl.attachShader(program, vertexShader);
-		gl.attachShader(program, fragmentShader);
-		gl.linkProgram(program);
+        //Create shader programs
+        var program = gl.createProgram();
+        gl.attachShader(program, vertexShader);
+        gl.attachShader(program, fragmentShader);
+        gl.linkProgram(program);
 
-		gl.useProgram(program);
+        gl.useProgram(program);
 
-		//Set up rectangle covering entire canvas 
-		var vertexData = new Float32Array([
-			-1.0, 1.0, 	// top left
-			-1.0, -1.0, 	// bottom left
-			1.0, 1.0, 	// top right
-			1.0, -1.0, 	// bottom right
-		]);
+        //Set up rectangle covering entire canvas 
+        var vertexData = new Float32Array([
+            -1.0, 1.0, 	// top left
+            -1.0, -1.0, 	// bottom left
+            1.0, 1.0, 	// top right
+            1.0, -1.0, 	// bottom right
+        ]);
 
-		//Create vertex buffer
-		var vertexDataBuffer = gl.createBuffer();
-		gl.bindBuffer(gl.ARRAY_BUFFER, vertexDataBuffer);
-		gl.bufferData(gl.ARRAY_BUFFER, vertexData, gl.STATIC_DRAW);
+        //Create vertex buffer
+        var vertexDataBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertexDataBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, vertexData, gl.STATIC_DRAW);
 
-		// Layout of our data in the vertex buffer
-		var positionHandle = getAttribLocation(program, 'position');
+        // Layout of our data in the vertex buffer
+        var positionHandle = getAttribLocation(program, 'position');
 
-		gl.enableVertexAttribArray(positionHandle);
-		gl.vertexAttribPointer(positionHandle,
-			2, 				// position is a vec2 (2 values per component)
-			gl.FLOAT, // each component is a float
-			false, 		// don't normalize values
-			2 * 4, 		// two 4 byte float components per vertex (32 bit float is 4 bytes)
-			0 				// how many bytes inside the buffer to start from
-		);
+        gl.enableVertexAttribArray(positionHandle);
+        gl.vertexAttribPointer(positionHandle,
+            2, 				// position is a vec2 (2 values per component)
+            gl.FLOAT, // each component is a float
+            false, 		// don't normalize values
+            2 * 4, 		// two 4 byte float components per vertex (32 bit float is 4 bytes)
+            0 				// how many bytes inside the buffer to start from
+        );
 
-		//Set uniform handle
-		var timeHandle = getUniformLocation(program, 'time');
-		var widthHandle = getUniformLocation(program, 'width');
-		var heightHandle = getUniformLocation(program, 'height');
+        //Set uniform handle
+        var timeHandle = getUniformLocation(program, 'time');
+        var widthHandle = getUniformLocation(program, 'width');
+        var heightHandle = getUniformLocation(program, 'height');
 
-		gl.uniform1f(widthHandle, window.innerWidth);
-		gl.uniform1f(heightHandle, window.innerHeight);
+        gl.uniform1f(widthHandle, window.innerWidth);
+        gl.uniform1f(heightHandle, window.innerHeight);
 
-		var lastFrame = Date.now();
-		var thisFrame;
+        var lastFrame = Date.now();
+        var thisFrame;
 
-		function draw() {
+        function draw() {
 
-			//Update time
-			thisFrame = Date.now();
-			time += (thisFrame - lastFrame) / 1000;
-			lastFrame = thisFrame;
+            //Update time
+            thisFrame = Date.now();
+            time += (thisFrame - lastFrame) / 1000;
+            lastFrame = thisFrame;
 
-			//Send uniforms to program
-			gl.uniform1f(timeHandle, time);
-			//Draw a triangle strip connecting vertices 0-4
-			gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+            //Send uniforms to program
+            gl.uniform1f(timeHandle, time);
+            //Draw a triangle strip connecting vertices 0-4
+            gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
-			requestAnimationFrame(draw);
-		}
+            requestAnimationFrame(draw);
+        }
 
-		draw();
-	</script>
+        draw();
+
+    </script>
 </body>
 
 </html>
